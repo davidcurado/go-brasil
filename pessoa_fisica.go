@@ -50,7 +50,7 @@ func (cpf CPF) firstVerifier() uint8 {
 	return uint8(remainder - 11)
 }
 
-func (cpf CPF) secondVerifier() byte {
+func (cpf CPF) secondVerifier() uint8 {
 	// TODO: implement this!
 	return cpf[10]
 }
