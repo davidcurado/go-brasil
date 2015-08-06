@@ -7,15 +7,16 @@ import (
 )
 
 func TestCPFValidation(t *testing.T) {
-	for index, value := range []CPF{
+	for index, value := range []string{
 		// Estes números foram gerados com um site qualquer na internet
 		// These numbers were generated from some site on the internet
 		"390.533.447-05",
 		"259.387.703-00",
 		"841.695.027-01",
 	} {
-		assert.Equal(t, value.String()[9], value.firstVerifier(), "Primeiro digito verificador do CPF %s não validou!", string(value))
-		assert.Equal(t, value.String()[10], value.secondVerifier(), "Segundo digito verificador do CPF %s não validou!", string(value))
-		assert.NoError(t, value.Validate(), "CPF #%d (%s) não validou!", index, string(value))
+		cpf, err := ParseCPF(value)
+		assert.NoError(t, err, "CPF #%d (%s) não validou!", index, value)
+		assert.Equal(t, cpf[cpflen-2], cpf.firstVerifier(), "Primeiro digito verificador do CPF %s não validou!", value)
+		assert.Equal(t, cpf[cpflen-1], cpf.secondVerifier(), "Segundo digito verificador do CPF %s não validou!", value)
 	}
 }
