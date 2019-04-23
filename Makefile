@@ -10,7 +10,5 @@ SHELL := /bin/bash
 # Targets
 #
 default: build
-build install:
-	@go -v -a "$@"
-test:
-	@go test -v -cover
+build install test:
+	go "$@" -v
