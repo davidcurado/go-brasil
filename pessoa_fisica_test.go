@@ -10,6 +10,7 @@ func TestCPFValidation(t *testing.T) {
 	for index, value := range []string{
 		// Estes números foram gerados com um site qualquer na internet
 		// These numbers were generated from some site on the internet
+		"111.444.777-35",
 		"390.533.447-05",
 		"259.387.703-00",
 		"841.695.027-01",

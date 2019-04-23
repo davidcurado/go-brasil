@@ -16,17 +16,17 @@ var (
 )
 
 // ParseCPF é uma função que cria CPFs
-func ParseCPF(value string) (*CPF, error) {
+func ParseCPF(value string) (CPF, error) {
 	var cpf CPF
 	parsed := strings.Replace(value, "-", "", -1)
 	parsed = strings.Replace(parsed, ".", "", -1)
 	if !cpfre.Match([]byte(parsed)) {
-		return nil, fmt.Errorf("O valor %s não parece estar no formato de um CPF", value)
+		return cpf, fmt.Errorf("O valor %s não parece estar no formato de um CPF", value)
 	}
 	for index, char := range parsed {
 		cpf[index] = uint8(char) - uint8('0')
 	}
-	return &cpf, nil
+	return cpf, nil
 }
 
 func (cpf CPF) String() string {
@@ -47,10 +47,18 @@ func (cpf CPF) firstVerifier() uint8 {
 	if remainder < 2 {
 		return 0
 	}
-	return uint8(remainder - 11)
+	return uint8(11 - remainder)
 }
 
 func (cpf CPF) secondVerifier() uint8 {
-	// TODO: implement this!
-	return cpf[10]
+	sum := 0
+	for i := 0; i < cpflen-2; i++ {
+		sum += int(cpf[i]) * (11 - i)
+	}
+	sum += int(cpf.firstVerifier()) * 2
+	remainder := sum % 11
+	if remainder < 2 {
+		return 0
+	}
+	return uint8(11 - remainder)
 }
